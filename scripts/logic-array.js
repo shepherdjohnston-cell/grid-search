@@ -13,7 +13,7 @@ function reset() {
 
 function resetGrid() {
    
-    for (let i = 0; i < col, i++) {
+    for (let i = 0; i < col; i++) {
         logicGrid[i] = [];
         domGrid[i] = [];
         for (let j = 0; j < row; j++) {
