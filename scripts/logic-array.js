@@ -5,8 +5,8 @@ const row = 25;
 const gridContainer = document.getElementById('grid-container');
 
 function reset() {
-    const start = {x:1, y:1};
-    const goal = {x:(col-2), y:(row-2)};
+    let start = {x:1, y:1};
+    let goal = {x:(col-2), y:(row-2)};
 
     resetGrid();
 }
@@ -25,6 +25,6 @@ function resetGrid() {
             domGrid[i][j] = newCell;
         }
     }
-    domGrid[start[x], start[y]].classList.add('start');
-    domGrid[goal[x], goal[y]].classList.add('goal');
+    domGrid[start[x]][start[y]].classList.add('start');
+    domGrid[goal[x]][goal[y]].classList.add('goal');
 }
