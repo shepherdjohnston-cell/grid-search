@@ -1,5 +1,29 @@
 #grid-container {
-    width: 500px;
-    height: 500px;
+    /*Grid placement*/
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
+    gap: 2px;
+    width: 548px;
+    height: 548px;
+
+    /*Styling*/
+    background-color:#dddddd;
     border-color: black;
+
+    /*temporary*/
+    position: fixed;
+    top: 30%;
+    left: 40%
+}
+
+.cell {
+    background-color:#aaaaaa;
+}
+
+.start {
+    background-color: #18c927;
+}
+
+.goal {
+    background-color: #de1c18;
 }

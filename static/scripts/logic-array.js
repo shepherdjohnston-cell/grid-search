@@ -3,11 +3,11 @@ const domGrid = [];
 const col = 25;
 const row = 25;
 const gridContainer = document.getElementById('grid-container');
+let gamestate = 0; /*0 for idle, 1 for running search */
+let start = {x:1, y:1};
+let goal = {x:(col-2), y:(row-2)};
 
 function reset() {
-    let start = {x:1, y:1};
-    let goal = {x:(col-2), y:(row-2)};
-
     resetGrid();
 }
 
@@ -25,6 +25,19 @@ function resetGrid() {
             domGrid[i][j] = newCell;
         }
     }
-    domGrid[start[x]][start[y]].classList.add('start');
-    domGrid[goal[x]][goal[y]].classList.add('goal');
+    domGrid[start['x']][start['y']].classList.add('start');
+    domGrid[goal['x']][goal['y']].classList.add('goal');
 }
+
+
+
+
+function simulate(searchAlgo, searchAlgoSim) {
+    console.time("searchTimer");
+    searchAlgo();
+    console.timeEnd("searchTimer");
+
+    searchAlgoSim();
+}
+
+reset();
