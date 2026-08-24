@@ -21,3 +21,7 @@ function depthFirstSearch(x, y) {
     }
     return false;
 }
+
+function depthFirstSim(x, y) {
+    
+}

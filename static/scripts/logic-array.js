@@ -4,8 +4,8 @@ const col = 25;
 const row = 25;
 const gridContainer = document.getElementById('grid-container');
 let gamestate = 0; /*0 for idle, 1 for running search */
-let start = {x:1, y:1};
-let goal = {x:(col-2), y:(row-2)};
+let start = [1, 1];
+let goal = [(col-2), (row-2)];
 
 function reset() {
     resetGrid();
@@ -17,27 +17,36 @@ function resetGrid() {
         logicGrid[i] = [];
         domGrid[i] = [];
         for (let j = 0; j < row; j++) {
+
+            /*Default parameters*/
+            /*TODO: Add neighbors' coordinates to object*/
             logicGrid[i][j] = {isWall:false, visited:false, distance:Infinity, previous:0, weight:1}
 
+            /* Create HTML Element for each grid and add to grid space array */
             const newCell = document.createElement('div');
             newCell.classList.add('cell');
             gridContainer.appendChild(newCell);
             domGrid[i][j] = newCell;
         }
     }
-    domGrid[start['x']][start['y']].classList.add('start');
-    domGrid[goal['x']][goal['y']].classList.add('goal');
+
+    /*Set start and goal on visual grid*/
+    domGrid[start[0]][start[1]].classList.add('start');
+    domGrid[goal[0]][goal[1]].classList.add('goal');
 }
 
 
 
 
 function simulate(searchAlgo, searchAlgoSim) {
+
+    /*Measure straight algorithim time*/
     console.time("searchTimer");
-    searchAlgo();
+    searchAlgo(start[0], start[1]);
     console.timeEnd("searchTimer");
 
-    searchAlgoSim();
+    /*Run Visual search algorithim*/
+    searchAlgoSim(start[0], start[1]);
 }
 
 reset();
