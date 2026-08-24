@@ -16,6 +16,10 @@
     left: 40%
 }
 
+#run-sim {
+    background-color: #18c927;
+}
+
 .cell {
     background-color:#aaaaaa;
 }
