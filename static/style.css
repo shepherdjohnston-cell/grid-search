@@ -27,3 +27,19 @@
 .goal {
     background-color: #de1c18;
 }
+
+.visited {
+    background-color: blue;
+}
+
+.frontier {
+    background-color: #dddddd;
+}
+
+.wall {
+    background-color: black;
+}
+
+.path {
+    background-color: brown;
+}

@@ -19,7 +19,6 @@ function resetGrid() {
         for (let j = 0; j < row; j++) {
 
             /*Default parameters*/
-            /*TODO: Add neighbors' coordinates to object*/
             logicGrid[i][j] = {isWall:false, visited:false, distance:Infinity, previous:0, weight:1}
 
             /* Create HTML Element for each grid and add to grid space array */
@@ -38,7 +37,7 @@ function resetGrid() {
 
 
 
-function simulate(searchAlgo, searchAlgoSim) {
+function searchStart(searchAlgo, searchAlgoSim) {
 
     /*Measure straight algorithim time*/
     console.time("searchTimer");
@@ -47,6 +46,7 @@ function simulate(searchAlgo, searchAlgoSim) {
 
     /*Run Visual search algorithim*/
     searchAlgoSim(start[0], start[1]);
+    retrace(goal[0], goal[1]);
 }
 
 reset();
