@@ -4,8 +4,8 @@ const col = 25;
 const row = 25;
 const gridContainer = document.getElementById('grid-container');
 let gamestate = 0; /*0 for idle, 1 for running search */
-let start = [1, 1];
-let goal = [(col-2), (row-2)];
+let start = [0, 0];
+let goal = [(col-1), (row-1)];
 
 /*temp run-sim button */
 const runSim = document.getElementById('run-sim');
@@ -65,7 +65,7 @@ async function searchStart(searchAlgo) {
     /*Run Visual search algorithim*/
     console.time("searchTimer");
     await replay(start[0], start[1]);
-    retrace(goal[0], goal[1]);
+    await retrace(goal[0], goal[1]);
     console.timeEnd("searchTimer");
 }
 

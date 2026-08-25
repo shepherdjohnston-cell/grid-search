@@ -1,15 +1,18 @@
-const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]]; /*left, right, down, up traversal grid traversal*/
+const directions = [[0, 1], [0, -1], [-1, 0], [1, 0]]; /*left, right, down, up traversal grid traversal*/
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 
 async function retrace(x, y) {
-    if (logicGrid[x][y]["previous"] === 0 || 
-        logicGrid[x][y] === logicGrid[goal[0]][goal[1]]){
+    if (logicGrid[x][y]["previous"] === 0){
         return;
     }
 
-    domGrid[x][y].className = 'path';
-    await sleep(20);
-    retrace(logicGrid[x][y]["previous"][0], logicGrid[x][y]["previous"][1]);
+    if (domGrid[x][y].className !== 'goal'){
+        domGrid[x][y].className = 'path';
+    }
+    
+    await sleep(10);
+    await retrace(logicGrid[x][y]["previous"][0], logicGrid[x][y]["previous"][1]);
 }
 
 
@@ -26,15 +29,15 @@ function depthFirstSearch(x, y) {
     }
 
     /*Purely logic based depth-first recursion search*/
-    for (const [dc, dr] of directions) {
-        const nCol = x + dc;
-        const nRow = y + dr;
+    for (const [dr, dc] of directions) {
+        const nRow = x + dr;
+        const nCol = y + dc;
 
         if (nCol >= 0 && nCol < col && nRow >= 0 && nRow < row 
-            && !logicGrid[nCol][nRow]["visited"] && !logicGrid[nCol][nRow]["isWall"]){
+            && !logicGrid[nRow][nCol]["visited"] && !logicGrid[nRow][nCol]["isWall"]){
             
-            logicGrid[nCol][nRow]["previous"] = [x, y]
-            const found = depthFirstSearch(nCol, nRow);
+            logicGrid[nRow][nCol]["previous"] = [x, y]
+            const found = depthFirstSearch(nRow, nCol);
 
             if (found) {
                 return true;
@@ -49,14 +52,23 @@ async function replay() {
     for (i = 0; i < searchOrder.length; i++)
     {
         const [x, y] = searchOrder[i];
-        domGrid[x][y].className = 'visited';
-        
-        for (const [dc, dr] of directions) {
-            const nCol = x + dc;
-            const nRow = y + dr;
-            domGrid[nCol][nRow].className = 'frontier';
+        if (logicGrid[x][y] !== logicGrid[goal[0]][goal[1]])
+        {
+            domGrid[x][y].className = 'visited';
         }
-        await sleep(20);    
+        
+        for (const [dr, dc] of directions) {
+            const nRow = x + dr;
+            const nCol = y + dc;
+            
+
+            if (nCol >= 0 && nCol < col && nRow >= 0 && nRow < row 
+            && domGrid[nRow][nCol].className !== 'visited' && !logicGrid[nRow][nCol]["isWall"]
+            && domGrid[nRow][nCol].className !== 'start' && domGrid[nRow][nCol].className !== 'goal') {
+                domGrid[nRow][nCol].className = 'frontier';
+            }
+        }
+        await sleep(10);    
     }
 }
     
