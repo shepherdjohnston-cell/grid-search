@@ -1,5 +1,6 @@
 const directions = [[0, 1], [0, -1], [-1, 0], [1, 0]]; /*left, right, down, up traversal grid traversal*/
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const searchOrder = [];
 
 
 async function retrace(x, y) {
@@ -16,8 +17,7 @@ async function retrace(x, y) {
 }
 
 
-const searchOrder = [];
-function depthFirstSearch(x, y) {
+function depthFirst(x, y) {
     /*breakout condition: goal found*/
     if (logicGrid[x][y] === logicGrid[goal[0]][goal[1]]) {
         return true;
@@ -36,7 +36,7 @@ function depthFirstSearch(x, y) {
         if (nCol >= 0 && nCol < col && nRow >= 0 && nRow < row 
             && !logicGrid[nRow][nCol]["visited"] && !logicGrid[nRow][nCol]["isWall"]){
             
-            logicGrid[nRow][nCol]["previous"] = [x, y]
+            logicGrid[nRow][nCol]["previous"] = [x, y];
             const found = depthFirstSearch(nRow, nCol);
 
             if (found) {
@@ -45,6 +45,34 @@ function depthFirstSearch(x, y) {
         }
     }
     return false;
+}
+
+const searchQueue = [];
+function breadthFirst() {
+    let x = start[0];
+    let y = start[1];
+
+    while (logicGrid[x][y] !== logicGrid[goal[0]][goal[1]])
+    {
+        logicGrid[x][y]['visited'] = true;
+        searchOrder.push([x, y]);
+
+
+        for (const [dr, dc] of directions)
+        {
+            const nRow = x + dr;
+            const nCol = y + dc;
+
+            if (nCol >= 0 && nCol < col && nRow >= 0 && nRow < row 
+            && !logicGrid[nRow][nCol]["visited"] && !logicGrid[nRow][nCol]["isWall"])
+            {
+                logicGrid[nRow][nCol]['previous'] = [x, y];
+                searchQueue.push([nRow, nCol]);
+            }
+        }
+
+        [x, y] = searchQueue.shift();
+    }
 }
 
 

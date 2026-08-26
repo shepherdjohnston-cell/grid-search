@@ -33,8 +33,8 @@ function startup() {
     domGrid[goal[0]][goal[1]].className = 'goal';
 
     runSim.addEventListener('click', () => {
-        resetGrid();
-        searchStart(depthFirstSearch);
+        /*searchStart(depthFirst);*/
+        searchStart(breadthFirst);
     });
 
 }
@@ -56,6 +56,11 @@ function resetGrid() {
 
 
 async function searchStart(searchAlgo) {
+    /*Set grid back to default settings*/
+    resetGrid(); /*TEMP: change when wall feature is added*/
+
+    /*Empty search order before each search*/
+    searchOrder.length = 0;
 
     /*Measure straight algorithim time*/
     console.time("searchTimer");
