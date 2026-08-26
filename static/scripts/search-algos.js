@@ -8,7 +8,7 @@ async function retrace(x, y) {
         return;
     }
 
-    if (domGrid[x][y].className !== 'goal'){
+    if (domGrid[x][y].className !== 'goal' && domGrid[x][y].className !== 'start'){
         domGrid[x][y].className = 'path';
     }
     
@@ -37,7 +37,7 @@ function depthFirst(x, y) {
             && !logicGrid[nRow][nCol]["visited"] && !logicGrid[nRow][nCol]["isWall"]){
             
             logicGrid[nRow][nCol]["previous"] = [x, y];
-            const found = depthFirstSearch(nRow, nCol);
+            const found = depthFirst(nRow, nCol);
 
             if (found) {
                 return true;
@@ -49,13 +49,17 @@ function depthFirst(x, y) {
 
 const searchQueue = [];
 function breadthFirst() {
-    let x = start[0];
-    let y = start[1];
+    searchQueue.push([start[0], start[1]]);
 
-    while (logicGrid[x][y] !== logicGrid[goal[0]][goal[1]])
+    while (searchQueue.length > 0)
     {
-        logicGrid[x][y]['visited'] = true;
-        searchOrder.push([x, y]);
+        const [x, y] = searchQueue.shift();
+        if (logicGrid[x][y] !== logicGrid[start[0]][start[1]] 
+            && logicGrid[x][y] !== logicGrid[goal[0]][goal[1]])
+        {
+            searchOrder.push([x, y]);
+        }
+
 
 
         for (const [dr, dc] of directions)
@@ -68,10 +72,9 @@ function breadthFirst() {
             {
                 logicGrid[nRow][nCol]['previous'] = [x, y];
                 searchQueue.push([nRow, nCol]);
+                logicGrid[nRow][nCol]['visited'] = true;
             }
         }
-
-        [x, y] = searchQueue.shift();
     }
 }
 

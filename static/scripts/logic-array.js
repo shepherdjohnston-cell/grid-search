@@ -7,8 +7,10 @@ let gamestate = 0; /*0 for idle, 1 for running search */
 let start = [0, 0];
 let goal = [(col-1), (row-1)];
 
-/*temp run-sim button */
-const runSim = document.getElementById('run-sim');
+/*Combine into an array to simplify code*/
+/*temp run-sim buttons */
+const depthStart = document.getElementById('depth-start');
+const breadthStart = document.getElementById('breadth-start');
 
 
 function startup() {
@@ -32,7 +34,14 @@ function startup() {
     domGrid[start[0]][start[1]].className = 'start';
     domGrid[goal[0]][goal[1]].className = 'goal';
 
-    runSim.addEventListener('click', () => {
+
+    /*BUG: start button inteferes with retrace function*/
+    depthStart.addEventListener('click', () => {
+        /*searchStart(depthFirst);*/
+        searchStart(depthFirst);
+    });
+
+    breadthStart.addEventListener('click', () => {
         /*searchStart(depthFirst);*/
         searchStart(breadthFirst);
     });
@@ -64,7 +73,7 @@ async function searchStart(searchAlgo) {
 
     /*Measure straight algorithim time*/
     console.time("searchTimer");
-    await searchAlgo(start[0], start[1]);
+    await searchAlgo(start[0], start[1]); /*TODO: Add return false case*/
     console.timeEnd("searchTimer");
 
     /*Run Visual search algorithim*/
