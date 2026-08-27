@@ -1,6 +1,7 @@
 const directions = [[0, 1], [0, -1], [-1, 0], [1, 0]]; /*left, right, down, up traversal grid traversal*/
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const searchOrder = [];
+const searchQueue = [];
 
 
 async function retrace(x, y) {
@@ -47,15 +48,18 @@ function depthFirst(x, y) {
     return false;
 }
 
-const searchQueue = [];
 function breadthFirst() {
     searchQueue.push([start[0], start[1]]);
 
     while (searchQueue.length > 0)
     {
         const [x, y] = searchQueue.shift();
-        if (logicGrid[x][y] !== logicGrid[start[0]][start[1]] 
-            && logicGrid[x][y] !== logicGrid[goal[0]][goal[1]])
+
+        if (logicGrid[x][y] === logicGrid[goal[0]][goal[1]]){
+            return true;
+        }
+
+        if (logicGrid[x][y] !== logicGrid[start[0]][start[1]])
         {
             searchOrder.push([x, y]);
         }
@@ -76,6 +80,52 @@ function breadthFirst() {
             }
         }
     }
+}
+
+function dijkstra() {
+    searchQueue.push([start[0], start[1]]);
+
+    while (searchQueue.length > 0){
+        let [minX, minY] = searchQueue[0];
+        let index = 0;
+
+        for (let i = 1; i < searchQueue.length; i++)
+        {
+            const [a, b] = searchQueue[i];
+            if (logicGrid[a][b]['distance'] < logicGrid[minX][minY]['distance']){
+                [minX, minY] = searchQueue[i];
+                index = i;
+            }
+        }
+
+        searchQueue.splice(index, 1);
+
+        if (logicGrid[minX][minY] === logicGrid[goal[0]][goal[1]]){
+            return true;
+        }
+
+        if (logicGrid[minX][minY] !== logicGrid[start[0]][start[1]])
+        {
+            searchOrder.push([minX, minY]);
+        }
+
+        for (const [dr, dc] of directions)
+        {
+            const nRow = minX + dr;
+            const nCol = minY + dc;
+
+            if (nCol >= 0 && nCol < col && nRow >= 0 && nRow < row 
+            && !logicGrid[nRow][nCol]["visited"] && !logicGrid[nRow][nCol]["isWall"])
+            {
+                logicGrid[nRow][nCol]['distance'] = logicGrid[nRow][nCol]['weight'];
+                logicGrid[nRow][nCol]['previous'] = [minX, minY];
+                searchQueue.push([nRow, nCol]);
+            }
+        }
+
+        logicGrid[minX][minY]['visited'] = true;
+    }
+
 }
 
 

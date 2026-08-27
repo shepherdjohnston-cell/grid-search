@@ -5,12 +5,13 @@ const row = 25;
 const gridContainer = document.getElementById('grid-container');
 let gamestate = 0; /*0 for idle, 1 for running search */
 let start = [0, 0];
-let goal = [(col-1), (row-1)];
+let goal = [(col-10), (row-10)];
 
 /*Combine into an array to simplify code*/
 /*temp run-sim buttons */
 const depthStart = document.getElementById('depth-start');
 const breadthStart = document.getElementById('breadth-start');
+const dijkstraStart = document.getElementById('dijkstra');
 
 
 function startup() {
@@ -30,6 +31,10 @@ function startup() {
         }
     }
 
+    /*Used for search algorithms that evualte weight*/
+    logicGrid[start[0]][start[1]]['distance'] = 0;
+
+
     /*Set start and goal on visual grid*/
     domGrid[start[0]][start[1]].className = 'start';
     domGrid[goal[0]][goal[1]].className = 'goal';
@@ -44,6 +49,11 @@ function startup() {
     breadthStart.addEventListener('click', () => {
         /*searchStart(depthFirst);*/
         searchStart(breadthFirst);
+    });
+
+    dijkstraStart.addEventListener('click', () => {
+        /*searchStart(depthFirst);*/
+        searchStart(dijkstra);
     });
 
 }
@@ -66,10 +76,11 @@ function resetGrid() {
 
 async function searchStart(searchAlgo) {
     /*Set grid back to default settings*/
-    resetGrid(); /*TEMP: change when wall feature is added*/
+    await resetGrid(); /*TEMP: change when wall feature is added*/
 
-    /*Empty search order before each search*/
+    /*Empty search order and queue before each search*/
     searchOrder.length = 0;
+    searchQueue.length = 0;
 
     /*Measure straight algorithim time*/
     console.time("searchTimer");
