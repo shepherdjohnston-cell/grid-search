@@ -5,11 +5,45 @@
 </head>
 
 <body>
-    <div id="grid-container">
-    </div>
-    <div>
-        <button class="run-sim" id="depth-start">Depth-First</button>
-        <button class="run-sim" id="breadth-start">Breadth-First</button>
-        <button class="run-sim" id="dijkstra">Dijkstra's</button>
+    <div id="grid-search">
+        <div id="grid-container"></div>
+
+        <div id="sidebar">
+            
+            <div id="algo-selector">
+                <button class="nav-arrow" id="prev-algo">&#10094;</button>
+                <div id="algo-header">
+                    <h2 id="algo-title">Depth-First Search</h2>
+                    <p id="algo-desc">Custom algorithm description goes here.</p>
+                </div>
+                <button class="nav-arrow" id="next-algo">&#10095;</button>
+            </div>
+
+            <div id="buttons">
+                <button class="run-sim" id="depth-start">Run Search</button>
+                <button class="reset-sim" id="reset-btn">Reset Grid</button>
+            </div>
+
+            <div id="legend">
+                <div class="legend-item"><span class="key-color start"></span> Start Node</div>
+                <div class="legend-item"><span class="key-color goal"></span> Goal Node</div>
+                <div class="legend-item"><span class="key-color wall"></span> Wall Block</div>
+                <div class="legend-item"><span class="key-color cell"></span> Unvisited</div>
+                <div class="legend-item"><span class="key-color frontier"></span> Frontier</div>
+                <div class="legend-item"><span class="key-color visited"></span> Visited</div>
+                <div class="legend-item"><span class="key-color path"></span> Shortest Path</div>
+            </div>
+
+            <div id="controls-key">
+                <h3>Controls</h3>
+                <ul>
+                    <li><kbd>S</kbd> Set Start</li>
+                    <li><kbd>G</kbd> Set Goal</li>
+                    <li><kbd>Click + Drag</kbd> Draw Walls</li>
+                    <li><kbd>Space</kbd> Start / Stop</li>
+                </ul>
+            </div>
+
+        </div>
     </div>
 </body>

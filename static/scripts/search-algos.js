@@ -87,24 +87,28 @@ function dijkstra() {
 
     while (searchQueue.length > 0){
         let [minX, minY] = searchQueue[0];
-        let index = 0;
+        let minIndex = 0;
 
         for (let i = 1; i < searchQueue.length; i++)
         {
             const [a, b] = searchQueue[i];
             if (logicGrid[a][b]['distance'] < logicGrid[minX][minY]['distance']){
                 [minX, minY] = searchQueue[i];
-                index = i;
+                minIndex = i;
             }
         }
 
-        searchQueue.splice(index, 1);
+        searchQueue.splice(minIndex, 1);
+        const currentCell = logicGrid[minX][minY];
 
-        if (logicGrid[minX][minY] === logicGrid[goal[0]][goal[1]]){
+        if (currentCell['visited'] == true) continue;
+        currentCell['visited'] = true;
+
+        if (currentCell === logicGrid[goal[0]][goal[1]]){
             return true;
         }
 
-        if (logicGrid[minX][minY] !== logicGrid[start[0]][start[1]])
+        if (currentCell !== logicGrid[start[0]][start[1]])
         {
             searchOrder.push([minX, minY]);
         }
@@ -117,20 +121,23 @@ function dijkstra() {
             if (nCol >= 0 && nCol < col && nRow >= 0 && nRow < row 
             && !logicGrid[nRow][nCol]["visited"] && !logicGrid[nRow][nCol]["isWall"])
             {
-                logicGrid[nRow][nCol]['distance'] = logicGrid[nRow][nCol]['weight'];
-                logicGrid[nRow][nCol]['previous'] = [minX, minY];
-                searchQueue.push([nRow, nCol]);
+                const neighbor = logicGrid[nRow][nCol];
+                const newDist = logicGrid[minX][minY]['distance'] + logicGrid[nRow][nCol]['weight'];
+                if (newDist < logicGrid[nRow][nCol]['distance'])
+                {
+                    neighbor['distance'] = newDist;
+                    neighbor['previous'] = [minX, minY];
+                    searchQueue.push([nRow, nCol]);
+                }
             }
         }
-
-        logicGrid[minX][minY]['visited'] = true;
     }
-
+    return false;
 }
 
 
 async function replay() {
-    for (i = 0; i < searchOrder.length; i++)
+    for (let i = 0; i < searchOrder.length; i++)
     {
         const [x, y] = searchOrder[i];
         if (logicGrid[x][y] !== logicGrid[goal[0]][goal[1]])

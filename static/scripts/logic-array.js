@@ -62,13 +62,14 @@ function resetGrid() {
    
     for (let i = 0; i < col; i++) {
         for (let j = 0; j < row; j++) {
-            logicGrid[i][j] = {isWall:false, visited:false, distance:Infinity, previous:0, weight:1};
+            logicGrid[i][j] = {isWall:false, visited:false, distance:Infinity, previous:0, weight:(Math.floor((Math.random() + 1) * 10))};
             domGrid[i][j].className = 'cell'
         }
     }
     
     domGrid[start[0]][start[1]].className = 'start';
     domGrid[goal[0]][goal[1]].className = 'goal';
+    logicGrid[start[0]][start[1]]['distance'] = 0;
 }
 
 
