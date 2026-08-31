@@ -9,9 +9,7 @@ let goal = [(col-10), (row-10)];
 
 /*Combine into an array to simplify code*/
 /*temp run-sim buttons */
-const depthStart = document.getElementById('depth-start');
-const breadthStart = document.getElementById('breadth-start');
-const dijkstraStart = document.getElementById('dijkstra');
+const startSim = document.getElementById('start-sim');
 
 
 function startup() {
@@ -41,21 +39,10 @@ function startup() {
 
 
     /*BUG: start button inteferes with retrace function*/
-    depthStart.addEventListener('click', () => {
+    startSim.addEventListener('click', () => {
         /*searchStart(depthFirst);*/
-        searchStart(depthFirst);
+        searchStart(currentSearchAlgo);
     });
-
-    breadthStart.addEventListener('click', () => {
-        /*searchStart(depthFirst);*/
-        searchStart(breadthFirst);
-    });
-
-    dijkstraStart.addEventListener('click', () => {
-        /*searchStart(depthFirst);*/
-        searchStart(dijkstra);
-    });
-
 }
 
 function resetGrid() {

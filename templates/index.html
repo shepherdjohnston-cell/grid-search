@@ -2,6 +2,7 @@
     <link rel="stylesheet" href="../static/style.css">
     <script src="../static/scripts/search-algos.js" defer></script>
     <script src="../static/scripts/logic-array.js" defer></script>
+    <script src="../static/scripts/gui.js" defer></script>
 </head>
 
 <body>
@@ -13,14 +14,24 @@
             <div id="algo-selector">
                 <button class="nav-arrow" id="prev-algo">&#10094;</button>
                 <div id="algo-header">
-                    <h2 id="algo-title">Depth-First Search</h2>
-                    <p id="algo-desc">Custom algorithm description goes here.</p>
+                    <div class="algo-slide active" id="depth-first">
+                        <h2 id="algo-title">Depth-First Search</h2>
+                        <p id="algo-desc">Custom algorithm description goes here.</p>
+                    </div>
+                    <div class="algo-slide" id="breadth-first">
+                        <h2 id="algo-title">Breadth-First Search</h2>
+                        <p id="algo-desc">Custom algorithm description goes here.</p>
+                    </div>
+                    <div class="algo-slide" id="dijkstra">
+                        <h2 id="algo-title">Dijkstra-First Search</h2>
+                        <p id="algo-desc">Custom algorithm description goes here.</p>
+                    </div>
                 </div>
                 <button class="nav-arrow" id="next-algo">&#10095;</button>
             </div>
 
             <div id="buttons">
-                <button class="run-sim" id="depth-start">Run Search</button>
+                <button class="run-sim" id="start-sim">Run Search</button>
                 <button class="reset-sim" id="reset-btn">Reset Grid</button>
             </div>
 

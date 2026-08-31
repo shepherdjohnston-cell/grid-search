@@ -71,6 +71,15 @@ body {
     color: #a0a0b0;
 }
 
+.algo-slide {
+    display: none;
+    text-align: center;
+}
+
+.algo-slide.active {
+    display: block;
+}
+
 .nav-arrow {
     background: transparent;
     border: none;
