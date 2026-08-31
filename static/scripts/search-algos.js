@@ -5,7 +5,7 @@ const searchQueue = [];
 
 
 async function retrace(x, y) {
-    if (logicGrid[x][y]["previous"] === 0){
+    if (logicGrid[x][y].previous === 0){
         return;
     }
 
@@ -14,7 +14,7 @@ async function retrace(x, y) {
     }
     
     await sleep(10);
-    await retrace(logicGrid[x][y]["previous"][0], logicGrid[x][y]["previous"][1]);
+    await retrace(logicGrid[x][y].previous[0], logicGrid[x][y].previous[1]);
 }
 
 
@@ -24,7 +24,7 @@ function depthFirst(x, y) {
         return true;
     }
 
-    logicGrid[x][y]["visited"] = true;
+    logicGrid[x][y].visited = true;
     if (x != start[0] || y != start[1]){
         searchOrder.push([x, y]);
     }
@@ -35,9 +35,9 @@ function depthFirst(x, y) {
         const nCol = y + dc;
 
         if (nCol >= 0 && nCol < col && nRow >= 0 && nRow < row 
-            && !logicGrid[nRow][nCol]["visited"] && !logicGrid[nRow][nCol]["isWall"]){
+            && !logicGrid[nRow][nCol].visited && !logicGrid[nRow][nCol].isWall){
             
-            logicGrid[nRow][nCol]["previous"] = [x, y];
+            logicGrid[nRow][nCol].previous = [x, y];
             const found = depthFirst(nRow, nCol);
 
             if (found) {
@@ -72,62 +72,57 @@ function breadthFirst() {
             const nCol = y + dc;
 
             if (nCol >= 0 && nCol < col && nRow >= 0 && nRow < row 
-            && !logicGrid[nRow][nCol]["visited"] && !logicGrid[nRow][nCol]["isWall"])
+            && !logicGrid[nRow][nCol].visited && !logicGrid[nRow][nCol].isWall)
             {
-                logicGrid[nRow][nCol]['previous'] = [x, y];
+                logicGrid[nRow][nCol].previous = [x, y];
                 searchQueue.push([nRow, nCol]);
-                logicGrid[nRow][nCol]['visited'] = true;
+                logicGrid[nRow][nCol].visited = true;
             }
         }
     }
 }
 
 function dijkstra() {
-    searchQueue.push([start[0], start[1]]);
+    const pq = new MinHeap();
+    
+    // Heap stores objects with coordinates and current distance
+    pq.push({ pos: [start[0], start[1]], distance: 0 });
 
-    while (searchQueue.length > 0){
-        let [minX, minY] = searchQueue[0];
-        let minIndex = 0;
-
-        for (let i = 1; i < searchQueue.length; i++)
-        {
-            const [a, b] = searchQueue[i];
-            if (logicGrid[a][b]['distance'] < logicGrid[minX][minY]['distance']){
-                [minX, minY] = searchQueue[i];
-                minIndex = i;
-            }
-        }
-
-        searchQueue.splice(minIndex, 1);
+    while (!pq.isEmpty()) {
+        const { pos: [minX, minY], distance } = pq.pop();
         const currentCell = logicGrid[minX][minY];
 
-        if (currentCell['visited'] == true) continue;
-        currentCell['visited'] = true;
+        // Skip stale heap entries
+        if (currentCell.visited) continue;
+        currentCell.visited = true;
 
-        if (currentCell === logicGrid[goal[0]][goal[1]]){
+        //found goal
+        if (minX === goal[0] && minY === goal[1]) {
             return true;
         }
 
-        if (currentCell !== logicGrid[start[0]][start[1]])
-        {
+        //start is not included in replay
+        if (minX !== start[0] || minY !== start[1]) {
             searchOrder.push([minX, minY]);
         }
 
-        for (const [dr, dc] of directions)
-        {
+        for (const [dr, dc] of directions) {
             const nRow = minX + dr;
             const nCol = minY + dc;
 
-            if (nCol >= 0 && nCol < col && nRow >= 0 && nRow < row 
-            && !logicGrid[nRow][nCol]["visited"] && !logicGrid[nRow][nCol]["isWall"])
-            {
+            if (
+                nCol >= 0 && nCol < col && 
+                nRow >= 0 && nRow < row && 
+                !logicGrid[nRow][nCol].visited && 
+                !logicGrid[nRow][nCol].isWall
+            ) {
                 const neighbor = logicGrid[nRow][nCol];
-                const newDist = logicGrid[minX][minY]['distance'] + logicGrid[nRow][nCol]['weight'];
-                if (newDist < logicGrid[nRow][nCol]['distance'])
-                {
-                    neighbor['distance'] = newDist;
-                    neighbor['previous'] = [minX, minY];
-                    searchQueue.push([nRow, nCol]);
+                const newDist = currentCell.distance + neighbor.weight;
+
+                if (newDist < neighbor.distance) {
+                    neighbor.distance = newDist;
+                    neighbor.previous = [minX, minY];
+                    pq.push({ pos: [nRow, nCol], distance: newDist });
                 }
             }
         }
